@@ -1,19 +1,13 @@
-{-# LANGUAGE OverloadedRecordDot #-}
-{-# LANGUAGE DataKinds #-}
 {-# LANGUAGE UnicodeSyntax #-}
+{-# LANGUAGE Arrows #-}
 
-import GHC.Records
-import GHC.TypeLits
+import Control.Arrow
 
-data DerivativeOf = DerivativeOf
-d = DerivativeOf
+data Integrated
 
-instance HasField (variable :: Symbol) DerivativeOf Derivative
+(∫) :: ArrowLoop a ⇒ a Expression Integrated
 
-instance Floating Derivative
-
-type Process = Floating t ⇒ t → t
-
-(≡) :: Derivative → Expression → Process
-
-s = d.s ≡ s*((μ dataset)*d.t + (σ dataset)*d.W)
+blackScholes = proc w → do
+  rec
+    price ←(∫)⤙ price * (μ dataset * d t + σ dataset * d w)
+  process ⤙ price
