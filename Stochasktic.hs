@@ -41,13 +41,13 @@ d = D
 (∫) = arr . Integrated
 at :: Floating f ⇒ Integrated → f → f
 
-blackScholes = proc w → do
+blackScholes = proc w:_ → do
   rec
     price ←(∫)⤙ price * (μ dataset * d t + σ dataset * d w)
   process ⤙ price
 
 -- https://math.stackexchange.com/questions/1050770/how-to-solve-system-of-stochastic-differential-equations
-example = proc (w₁, w₂) → do
+example = proc w₁:w₂:_ → do
   rec
     n₁ ←(∫)⤙ (2*a - 1)*p*n₁*d t + α*n₁*d w₁
     n₂ ←(∫)⤙ (2*p*n₁ - μ*n₂)*d t + α₂*n₂*d w₂
